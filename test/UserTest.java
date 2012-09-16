@@ -18,4 +18,6 @@ public class UserTest extends TestCase {
     {
         assertEquals("111",new User("abc","111").getLibNumber());
     }
+
 }
+
