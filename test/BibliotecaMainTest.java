@@ -1,16 +1,9 @@
 import junit.framework.TestCase;
 
 
-/**
- * Created with IntelliJ IDEA.
- * User: vidhi
- * Date: 9/16/12
- * Time: 1:25 AM
- * To change this template use File | Settings | File Templates.
- */
 public class BibliotecaMainTest extends TestCase {
 
-    public void testDisplayWelcome()
+    /*public void testDisplayWelcome()
      {
 
 
@@ -30,7 +23,7 @@ public class BibliotecaMainTest extends TestCase {
         assertEquals(true,BibliotecaMain.isBookAvailable(s));
        // assertFalse(BibliotecaMain.isBookAvailable("xxx"));
     }
-
+*/
 
 
 }
