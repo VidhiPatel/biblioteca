@@ -2,22 +2,27 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BibliotecaMain {
-    public static void main(String[] args) {
 
-        new BibliotecaMain().run();
+    private final Biblioteca biblioteca;
+
+    public BibliotecaMain(Biblioteca biblioteca) {
+        this.biblioteca = biblioteca;
     }
-    private void run()
-    {
-        Biblioteca biblioteca = new Biblioteca(System.out,new Input(),books());
+
+    public void run() {
         biblioteca.displayWelcome();
-        Boolean isExit = false;
-        while (!isExit)
-        {
+        Boolean continueLoop = true;
+        while (continueLoop) {
             biblioteca.displayMenu();
-            isExit = biblioteca.performMenuSelection();
+            continueLoop = biblioteca.performMenuSelection();
         }
     }
-    private List<Book> books() {
+
+    public static void main(String[] args) {
+        new BibliotecaMain(new Biblioteca(System.out, new Input(), books())).run();
+    }
+
+    private static List<Book> books() {
         List<Book> books = new ArrayList<Book>();
         books.add(new Book(1, "Alice in Wonderland", false));
         books.add(new Book(2, "Da Vinci Code", false));
@@ -26,7 +31,7 @@ public class BibliotecaMain {
         books.add(new Book(5, "Deathly Hallows", false));
         return books;
     }
-    }
+}
 
 
 
