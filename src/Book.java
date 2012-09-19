@@ -3,7 +3,7 @@ public class Book {
     public final int number;
     public boolean reserved;
 
-    Book(int number, String name,Boolean reserved) {
+    Book(int number, String name, Boolean reserved) {
         this.name = name;
         this.number = number;
         this.reserved = reserved;

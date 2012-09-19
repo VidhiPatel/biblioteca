@@ -19,7 +19,7 @@ public class BibliotecaMain {
     }
 
     public static void main(String[] args) {
-        new BibliotecaMain(new Biblioteca(System.out, new Input(), books())).run();
+        new BibliotecaMain(new Biblioteca(System.out, new Input(), books(), movies())).run();
     }
 
     private static List<Book> books() {
@@ -30,6 +30,13 @@ public class BibliotecaMain {
         books.add(new Book(4, "Chambers of Secret", false));
         books.add(new Book(5, "Deathly Hallows", false));
         return books;
+    }
+
+    private static List<Movie> movies() {
+        List<Movie> movies = new ArrayList<Movie>();
+        movies.add(new Movie("Sholay", "Ramesh Sippy", "1975", 8));
+        movies.add(new Movie("abc", "xyz", "1970", -1));
+        return movies;
     }
 }
 

@@ -17,7 +17,14 @@ public class BibliotecaTest extends TestCase {
         super.setUp();
         mockInput = mock(Input.class);
         mockPrintStream = mock(PrintStream.class);
-        biblioteca = new Biblioteca(mockPrintStream, mockInput, books());
+        biblioteca = new Biblioteca(mockPrintStream, mockInput, books(), movies());
+    }
+
+    private List<Movie> movies() {
+        List<Movie> movies = new ArrayList<Movie>();
+        movies.add(new Movie("Sholay", "Ramesh Sippy", "1975", 8));
+        movies.add(new Movie("abc", "xyz", "1970", -1));
+        return movies;
     }
 
     @Test
@@ -36,7 +43,8 @@ public class BibliotecaTest extends TestCase {
         verify(mockPrintStream).println("Please select option from the menu:");
         verify(mockPrintStream).println("1. View all books.");
         verify(mockPrintStream).println("2. Reserve a book");
-        verify(mockPrintStream).println("3. Check details");
+        verify(mockPrintStream).println("3. View movies");
+        verify(mockPrintStream).println("4. Check details");
         verify(mockPrintStream).println("0. Exit");
         verify(mockPrintStream).println("Enter your choice:");
     }
@@ -65,12 +73,22 @@ public class BibliotecaTest extends TestCase {
         verify(mockPrintStream).println("Sorry! We do not have that book yet.");
 
     }
+
     @Test
     public void testPerformMenuSelectionForOption2IncorrectBook() {
         when(mockInput.getSelection()).thenReturn(2, 6);
 
         biblioteca.performMenuSelection();
         verify(mockPrintStream).println("Sorry! We do not have that book yet.");
+    }
+
+    @Test
+    public void testPerformMenuSelectionForOption3() {
+        when(mockInput.getSelection()).thenReturn(3);
+
+        biblioteca.performMenuSelection();
+        verify(mockPrintStream).println("Sholay : 1975 : Ramesh Sippy : 8");
+        verify(mockPrintStream).println("abc : 1970 : xyz : rating not available");
     }
 
     @Test
@@ -81,11 +99,12 @@ public class BibliotecaTest extends TestCase {
     }
 
     @Test
-    public void testPerformMenuSelectionForInvalidOption(){
+    public void testPerformMenuSelectionForInvalidOption() {
         when(mockInput.getSelection()).thenReturn(6);
         biblioteca.performMenuSelection();
         verify(mockPrintStream).println("Invalid option");
     }
+
     private List<Book> books() {
         List<Book> books = new ArrayList<Book>();
         books.add(new Book(1, "Alice in Wonderland", false));

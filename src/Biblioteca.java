@@ -3,13 +3,15 @@ import java.util.List;
 
 public class Biblioteca {
     private final List<Book> books;
+    private final List<Movie> movies;
     private final PrintStream printStream;
     private final Input input;
 
-    public Biblioteca(PrintStream printStream, Input input, List<Book> books) {
+    public Biblioteca(PrintStream printStream, Input input, List<Book> books, List<Movie> movies) {
         this.printStream = printStream;
         this.input = input;
         this.books = books;
+        this.movies = movies;
     }
 
     public void displayWelcome() {
@@ -20,7 +22,8 @@ public class Biblioteca {
         printStream.println("Please select option from the menu:");
         printStream.println("1. View all books.");
         printStream.println("2. Reserve a book");
-        printStream.println("3. Check details");
+        printStream.println("3. View movies");
+        printStream.println("4. Check details");
         printStream.println("0. Exit");
         printStream.println("Enter your choice:");
     }
@@ -35,14 +38,22 @@ public class Biblioteca {
                 reserveBook();
                 break;
             case 3:
+                displayMovies();
+            case 4:
                 checkDetails();
                 break;
             case 0:
                 return true;
             default:
-               printStream.println("Invalid option");
+                printStream.println("Invalid option");
         }
         return false;
+    }
+
+    private void displayMovies() {
+        for (Movie movie : movies) {
+            printStream.println(movie.toString());
+        }
     }
 
     private void reserveBook() {
@@ -50,16 +61,17 @@ public class Biblioteca {
         Book requestedBook = getRequestedBook(bookNumber);
         if (requestedBook != null) {
             requestedBook.reserved = true;
-            printStream.println("Thank you! Enjoy the book " + requestedBook.name +".");
+            printStream.println("Thank you! Enjoy the book " + requestedBook.name + ".");
         } else {
-           printStream.println("Sorry! We do not have that book yet.");
+            printStream.println("Sorry! We do not have that book yet.");
         }
     }
 
     private Book getRequestedBook(int bookNumber) {
         for (Book book : books) {
             if (book.checkNumber(bookNumber) && book.isAvailable()) {
-                return book;                       }
+                return book;
+            }
         }
         return null;
     }

@@ -18,8 +18,8 @@ public class Input {
             return 0;
         }
     }
-    public String getBookName()
-    {
+
+    public String getBookName() {
         try {
             String s = reader.readLine();
             return s;

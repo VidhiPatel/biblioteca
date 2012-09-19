@@ -16,7 +16,7 @@ public class BookTest extends TestCase {
 
     @Test
     public void testCheckReserved() {
-        assertTrue(new Book(1,"abc",true).checkReserved());
-        assertFalse(new Book(1,"abc",false).checkReserved());
+        assertTrue(new Book(1, "abc", true).checkReserved());
+        assertFalse(new Book(1, "abc", false).checkReserved());
     }
 }
