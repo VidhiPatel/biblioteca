@@ -42,7 +42,7 @@ public class BibliotecaTest extends TestCase {
     }
 
     @Test
-    public void testPerformMenuSelection() {
+    public void testPerformMenuSelectionForOption1() {
         when(mockInput.getSelection()).thenReturn(1);
 
         biblioteca.performMenuSelection();
@@ -54,13 +54,32 @@ public class BibliotecaTest extends TestCase {
         verify(mockPrintStream).println("5 : Deathly Hallows");
     }
 
+    @Test
+    public void testPerformMenuSelectionForOption2CorrectBook() {
+        when(mockInput.getSelection()).thenReturn(2, 3, 2, 3);
+
+        biblioteca.performMenuSelection();
+
+        verify(mockPrintStream).println("Thank you! Enjoy the book Angels and Demons.");
+        biblioteca.performMenuSelection();
+        verify(mockPrintStream).println("Sorry! We do not have that book yet.");
+
+    }
+    @Test
+    public void testPerformMenuSelectionForOption2IncorrectBook() {
+        when(mockInput.getSelection()).thenReturn(2, 6);
+
+        biblioteca.performMenuSelection();
+        verify(mockPrintStream).println("Sorry! We do not have that book yet.");
+    }
+
     private List<Book> books() {
         List<Book> books = new ArrayList<Book>();
-        books.add(new Book(1, "Alice in Wonderland"));
-        books.add(new Book(2, "Da Vinci Code"));
-        books.add(new Book(3, "Angels and Demons"));
-        books.add(new Book(4, "Chambers of Secret"));
-        books.add(new Book(5, "Deathly Hallows"));
+        books.add(new Book(1, "Alice in Wonderland", false));
+        books.add(new Book(2, "Da Vinci Code", false));
+        books.add(new Book(3, "Angels and Demons", false));
+        books.add(new Book(4, "Chambers of Secret", false));
+        books.add(new Book(5, "Deathly Hallows", false));
         return books;
     }
 }

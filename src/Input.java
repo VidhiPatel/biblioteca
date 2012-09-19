@@ -1,4 +1,5 @@
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 
 public class Input {
@@ -16,5 +17,16 @@ public class Input {
             System.out.println("Invalid integer");
             return 0;
         }
+    }
+    public String getBookName()
+    {
+        try {
+            String s = reader.readLine();
+            return s;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return "Exception";
+        }
+
     }
 }

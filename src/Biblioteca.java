@@ -1,6 +1,3 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.util.List;
 
@@ -44,34 +41,33 @@ public class Biblioteca {
                 break;
 
             default:
-                System.out.println("Invalid option");
+               printStream.println("Invalid option");
         }
     }
 
     private void reserveBook() {
-        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-        try {
-            String s = reader.readLine();
-            if (isBookAvailable(s)) {
-                System.out.println("Thank you! Enjoy the book");
-            } else {
-                System.out.println("Sorry! We do not have that book yet.");
-            }
-
-        } catch (IOException e) {
-            System.out.println("Exception occurred");
-
+        int bookNumber = input.getSelection();
+        Book requestedBook = getRequestedBook(bookNumber);
+        if (requestedBook != null) {
+            requestedBook.reserved = true;
+            printStream.println("Thank you! Enjoy the book " + requestedBook.name +".");
+        } else {
+           printStream.println("Sorry! We do not have that book yet.");
         }
 
 
     }
 
-    public boolean isBookAvailable(String s) {
-        return false;
+    private Book getRequestedBook(int bookNumber) {
+        for (Book book : books) {
+            if (book.checkNumber(bookNumber) && book.isAvailable()) {
+                return book;                       }
+        }
+        return null;
     }
 
     private void checkDetails() {
-        System.out.println("Please talk to Librarian. Thank you.");
+        printStream.println("Please talk to Librarian. Thank you.");
     }
 
     private void displayBooks() {
