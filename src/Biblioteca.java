@@ -25,7 +25,7 @@ public class Biblioteca {
         printStream.println("Enter your choice:");
     }
 
-    public void performMenuSelection() {
+    public Boolean performMenuSelection() {
         int selection = input.getSelection();
         switch (selection) {
             case 1:
@@ -38,11 +38,13 @@ public class Biblioteca {
                 checkDetails();
                 break;
             case 0:
-                break;
+                return true;
+
 
             default:
                printStream.println("Invalid option");
         }
+        return false;
     }
 
     private void reserveBook() {
@@ -54,8 +56,6 @@ public class Biblioteca {
         } else {
            printStream.println("Sorry! We do not have that book yet.");
         }
-
-
     }
 
     private Book getRequestedBook(int bookNumber) {

@@ -73,6 +73,19 @@ public class BibliotecaTest extends TestCase {
         verify(mockPrintStream).println("Sorry! We do not have that book yet.");
     }
 
+    @Test
+    public void testPerformMenuSelectionForOption0() {
+        when(mockInput.getSelection()).thenReturn(0);
+
+        assertTrue(biblioteca.performMenuSelection());
+    }
+
+    @Test
+    public void testPerformMenuSelectionForInvalidOption(){
+        when(mockInput.getSelection()).thenReturn(6);
+        biblioteca.performMenuSelection();
+        verify(mockPrintStream).println("Invalid option");
+    }
     private List<Book> books() {
         List<Book> books = new ArrayList<Book>();
         books.add(new Book(1, "Alice in Wonderland", false));
