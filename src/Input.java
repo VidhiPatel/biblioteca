@@ -19,7 +19,7 @@ public class Input {
         }
     }
 
-    public String getBookName() {
+    public String getString() {
         try {
             String s = reader.readLine();
             return s;

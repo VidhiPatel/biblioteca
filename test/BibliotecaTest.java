@@ -12,12 +12,23 @@ public class BibliotecaTest extends TestCase {
     private Input mockInput;
     private PrintStream mockPrintStream;
     private Biblioteca biblioteca;
+    private Biblioteca bibliotecaLoggedIn;
+    private User mockCurrentUser;
 
     protected void setUp() throws Exception {
         super.setUp();
         mockInput = mock(Input.class);
         mockPrintStream = mock(PrintStream.class);
-        biblioteca = new Biblioteca(mockPrintStream, mockInput, books(), movies());
+        mockCurrentUser = mock(User.class);
+        biblioteca = new Biblioteca(mockPrintStream, mockInput, books(), movies(), users(), null, false);
+        bibliotecaLoggedIn = new Biblioteca(mockPrintStream, mockInput, books(), movies(), users(), null, true);
+    }
+
+    private List<User> users() {
+        List<User> users = new ArrayList<User>();
+        users.add(new User("111", "abc", "xyz", "abc@xyz.com", "123456", false, mockPrintStream));
+        users.add(new User("112", "aaa", "bbb", "aaa@bbb.com", "123789", false, mockPrintStream));
+        return users;
     }
 
     private List<Movie> movies() {
@@ -45,6 +56,8 @@ public class BibliotecaTest extends TestCase {
         verify(mockPrintStream).println("2. Reserve a book");
         verify(mockPrintStream).println("3. View movies");
         verify(mockPrintStream).println("4. Check details");
+        verify(mockPrintStream).println("5. Login");
+        verify(mockPrintStream).println("6. Logout");
         verify(mockPrintStream).println("0. Exit");
         verify(mockPrintStream).println("Enter your choice:");
     }
@@ -63,22 +76,34 @@ public class BibliotecaTest extends TestCase {
     }
 
     @Test
+    public void testPerformMenuSelectionForOption2NotLoggedIn() {
+
+        when(mockInput.getSelection()).thenReturn(2);
+
+        biblioteca.performMenuSelection();
+
+        verify(mockPrintStream).println("You need to Login to use this service.");
+
+    }
+
+    @Test
     public void testPerformMenuSelectionForOption2CorrectBook() {
         when(mockInput.getSelection()).thenReturn(2, 3, 2, 3);
 
-        biblioteca.performMenuSelection();
+        bibliotecaLoggedIn.performMenuSelection();
 
         verify(mockPrintStream).println("Thank you! Enjoy the book Angels and Demons.");
-        biblioteca.performMenuSelection();
+        bibliotecaLoggedIn.performMenuSelection();
         verify(mockPrintStream).println("Sorry! We do not have that book yet.");
+
 
     }
 
     @Test
     public void testPerformMenuSelectionForOption2IncorrectBook() {
-        when(mockInput.getSelection()).thenReturn(2, 6);
+        when(mockInput.getSelection()).thenReturn(2, 8);
 
-        biblioteca.performMenuSelection();
+        new Biblioteca(mockPrintStream, mockInput, books(), movies(), users(), null, true).performMenuSelection();
         verify(mockPrintStream).println("Sorry! We do not have that book yet.");
     }
 
@@ -87,7 +112,7 @@ public class BibliotecaTest extends TestCase {
         when(mockInput.getSelection()).thenReturn(3);
 
         biblioteca.performMenuSelection();
-        verify(mockPrintStream).println("Sholay : 1975 : Ramesh Sippy : 8");
+        verify(mockPrintStream).println("Sholay : 1975 : Ramesh Sippy : ********");
         verify(mockPrintStream).println("abc : 1970 : xyz : rating not available");
     }
 
@@ -99,11 +124,83 @@ public class BibliotecaTest extends TestCase {
     }
 
     @Test
-    public void testPerformMenuSelectionForInvalidOption() {
+    public void testPerformMenuSelectionForOption4() {
+        when(mockInput.getSelection()).thenReturn(4);
+
+        biblioteca.performMenuSelection();
+        verify(mockPrintStream).println("Please talk to Librarian. Thank you.");
+        new Biblioteca(mockPrintStream, mockInput, books(), movies(), users(), new User("111", "abc", "xyz", "abc@xyz.com", "123456", true, mockPrintStream), true).performMenuSelection();
+        verify(mockPrintStream).println("Name : abc");
+        verify(mockPrintStream).println("Email : abc@xyz.com");
+        verify(mockPrintStream).println("Phone Number : 123456");
+
+    }
+    @Test
+    public void testPerformMenuSelectionForOption4WithLoginLogout() {
+        //without Login
+        when(mockInput.getSelection()).thenReturn(4);
+        biblioteca.performMenuSelection();
+        verify(mockPrintStream,atLeastOnce()).println("Please talk to Librarian. Thank you.");
+        //Login
+        when(mockInput.getSelection()).thenReturn(5);
+        when(mockInput.getString()).thenReturn("111", "xyz");
+        biblioteca.performMenuSelection();
+        verify(mockPrintStream).println("Enter your Username :");
+        verify(mockPrintStream).println("Enter your Password :");
+        verify(mockPrintStream).println("You have successfully logged in.");
+        //After Login
+        when(mockInput.getSelection()).thenReturn(4);
+        biblioteca.performMenuSelection();
+        verify(mockPrintStream).println("Name : abc");
+        verify(mockPrintStream).println("Email : abc@xyz.com");
+        verify(mockPrintStream).println("Phone Number : 123456");
+        //Logout
         when(mockInput.getSelection()).thenReturn(6);
+        biblioteca.performMenuSelection();
+        verify(mockPrintStream).println("You are logged out.");
+        //After Logout
+        when(mockInput.getSelection()).thenReturn(4);
+        biblioteca.performMenuSelection();
+        verify(mockPrintStream,atLeastOnce()).println("Please talk to Librarian. Thank you.");
+
+    }
+        @Test
+    public void testPerformMenuSelectionForOption5Valid() {
+        when(mockInput.getSelection()).thenReturn(5);
+        when(mockInput.getString()).thenReturn("111", "xyz");
+        biblioteca.performMenuSelection();
+        verify(mockPrintStream).println("Enter your Username :");
+        verify(mockPrintStream).println("Enter your Password :");
+        verify(mockPrintStream).println("You have successfully logged in.");
+
+    }
+
+    @Test
+    public void testPerformMenuSelectionForOption5Invalid() {
+        when(mockInput.getSelection()).thenReturn(5);
+        when(mockInput.getString()).thenReturn("112", "xyz");
+        biblioteca.performMenuSelection();
+        verify(mockPrintStream).println("Enter your Username :");
+        verify(mockPrintStream).println("Enter your Password :");
+        verify(mockPrintStream).println("Invalid username or password.");
+
+    }
+
+    @Test
+    public void testPerformMenuSelectionForOption6() {
+        when(mockInput.getSelection()).thenReturn(6);
+        biblioteca.performMenuSelection();
+        verify(mockPrintStream).println("You are logged out.");
+    }
+
+
+    @Test
+    public void testPerformMenuSelectionForInvalidOption() {
+        when(mockInput.getSelection()).thenReturn(8);
         biblioteca.performMenuSelection();
         verify(mockPrintStream).println("Invalid option");
     }
+
 
     private List<Book> books() {
         List<Book> books = new ArrayList<Book>();

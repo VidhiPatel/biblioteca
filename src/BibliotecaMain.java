@@ -14,12 +14,20 @@ public class BibliotecaMain {
         Boolean continueLoop = true;
         while (continueLoop) {
             biblioteca.displayMenu();
-            continueLoop = biblioteca.performMenuSelection();
+            continueLoop = !biblioteca.performMenuSelection();
         }
     }
 
     public static void main(String[] args) {
-        new BibliotecaMain(new Biblioteca(System.out, new Input(), books(), movies())).run();
+        new BibliotecaMain(new Biblioteca(System.out, new Input(), books(), movies(), users(), null, false)).run();
+    }
+
+    private static List<User> users() {
+        List<User> users = new ArrayList<User>();
+        users.add(new User("111", "abc", "xyz", "abc@xyz.com", "123456", false, System.out));
+        users.add(new User("112", "aaa", "bbb", "aaa@bbb.com", "123789", false, System.out));
+
+        return users;
     }
 
     private static List<Book> books() {

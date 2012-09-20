@@ -15,8 +15,7 @@ public class Movie {
     private String rating() {
         if (this.rating > 0) {
             String res = "";
-            for(int i=0; i<rating ;i++)
-            {
+            for (int i = 0; i < rating; i++) {
                 res += "*";
             }
             return res;

@@ -7,7 +7,7 @@ public class BibliotecaMainTest {
     @Test(timeout = 500)
     public void shouldExitMenuOperationsOnChoosingExit() throws Exception {
         Biblioteca mockBiblioteca = mock(Biblioteca.class);
-        when(mockBiblioteca.performMenuSelection()).thenReturn(false);
+        when(mockBiblioteca.performMenuSelection()).thenReturn(true);
 
         new BibliotecaMain(mockBiblioteca).run();
     }
