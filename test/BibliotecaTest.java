@@ -135,12 +135,13 @@ public class BibliotecaTest extends TestCase {
         verify(mockPrintStream).println("Phone Number : 123456");
 
     }
+
     @Test
     public void testPerformMenuSelectionForOption4WithLoginLogout() {
         //without Login
         when(mockInput.getSelection()).thenReturn(4);
         biblioteca.performMenuSelection();
-        verify(mockPrintStream,atLeastOnce()).println("Please talk to Librarian. Thank you.");
+        verify(mockPrintStream, atLeastOnce()).println("Please talk to Librarian. Thank you.");
         //Login
         when(mockInput.getSelection()).thenReturn(5);
         when(mockInput.getString()).thenReturn("111", "xyz");
@@ -161,10 +162,11 @@ public class BibliotecaTest extends TestCase {
         //After Logout
         when(mockInput.getSelection()).thenReturn(4);
         biblioteca.performMenuSelection();
-        verify(mockPrintStream,atLeastOnce()).println("Please talk to Librarian. Thank you.");
+        verify(mockPrintStream, atLeastOnce()).println("Please talk to Librarian. Thank you.");
 
     }
-        @Test
+
+    @Test
     public void testPerformMenuSelectionForOption5Valid() {
         when(mockInput.getSelection()).thenReturn(5);
         when(mockInput.getString()).thenReturn("111", "xyz");
