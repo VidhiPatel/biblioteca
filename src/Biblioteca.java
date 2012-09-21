@@ -38,9 +38,7 @@ public class Biblioteca {
 
     public boolean performMenuSelection() {
         int selection = input.getSelection();
-        if (!loggedIn && selection == 2) {
-            printStream.println("You need to Login to use this service.");
-        } else {
+
             switch (selection) {
                 case 1:
                     displayBooks();
@@ -65,7 +63,7 @@ public class Biblioteca {
                 default:
                     printStream.println("Invalid option");
             }
-        }
+
         return false;
     }
 
@@ -109,13 +107,17 @@ public class Biblioteca {
     }
 
     private void reserveBook() {
-        int bookNumber = input.getSelection();
-        Book requestedBook = getRequestedBook(bookNumber);
-        if (requestedBook != null) {
-            requestedBook.reserved = true;
-            printStream.println("Thank you! Enjoy the book " + requestedBook.name + ".");
+        if (!loggedIn) {
+            printStream.println("You need to Login to use this service.");
         } else {
-            printStream.println("Sorry! We do not have that book yet.");
+            int bookNumber = input.getSelection();
+            Book requestedBook = getRequestedBook(bookNumber);
+            if (requestedBook != null) {
+                requestedBook.reserved = true;
+                printStream.println("Thank you! Enjoy the book " + requestedBook.name + ".");
+            } else {
+                printStream.println("Sorry! We do not have that book yet.");
+            }
         }
     }
 

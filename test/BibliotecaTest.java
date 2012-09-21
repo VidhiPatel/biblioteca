@@ -169,6 +169,7 @@ public class BibliotecaTest extends TestCase {
     @Test
     public void testPerformMenuSelectionForOption5Valid() {
         when(mockInput.getSelection()).thenReturn(5);
+
         when(mockInput.getString()).thenReturn("111", "xyz");
         biblioteca.performMenuSelection();
         verify(mockPrintStream).println("Enter your Username :");
