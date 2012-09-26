@@ -19,8 +19,12 @@ public class BibliotecaMain {
     }
 
     public static void main(String[] args) {
-        new BibliotecaMain(new Biblioteca(System.out, new Input(), books(), movies(), users(), null, false)).run();
+        User currentUser = null;
+        boolean loggedIn = false;
+        new BibliotecaMain(new Biblioteca(System.out, new Input(), books(), movies(), users(), currentUser, loggedIn)).run();
     }
+
+
 
     private static List<User> users() {
         List<User> users = new ArrayList<User>();

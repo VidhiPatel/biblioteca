@@ -1,14 +1,18 @@
 import java.io.PrintStream;
+import java.util.HashMap;
 import java.util.List;
 
 public class Biblioteca {
-    private final List<Book> books;
-    private final List<Movie> movies;
-    private final List<User> users;
-    private final PrintStream printStream;
-    private final Input input;
-    private User currentUser;
-    private boolean loggedIn;
+    public List<Book> books;
+    public List<Movie> movies;
+    public List<User> users;
+    public PrintStream printStream;
+    public Input input;
+    public User currentUser;
+    public boolean loggedIn;
+    private final HashMap<String,Action> menu;
+
+
 
     public Biblioteca(PrintStream printStream, Input input, List<Book> books, List<Movie> movies, List<User> users, User currentUser, boolean loggedIn) {
         this.printStream = printStream;
@@ -18,6 +22,20 @@ public class Biblioteca {
         this.users = users;
         this.currentUser = currentUser;
         this.loggedIn = loggedIn;
+        menu = createMenu();
+
+    }
+    private HashMap<String, Action> createMenu() {
+        HashMap<String,Action> menu = new HashMap<String, Action>();
+        menu.put("1",new DisplayBooksAction(printStream,books));
+        menu.put("2",new ReserveBookAction(this));
+        menu.put("3",new DisplayMovieAction(this));
+        menu.put("4",new DisplayLibraryDetailsAction(this));
+        menu.put("5",new LoginAction(this));
+        menu.put("6",new LogoutAction(this));
+        menu.put("0",new ExitAction(this));
+        return menu;
+
     }
 
     public void displayWelcome() {
@@ -37,110 +55,16 @@ public class Biblioteca {
     }
 
     public boolean performMenuSelection() {
-        int selection = input.getSelection();
 
-            switch (selection) {
-                case 1:
-                    displayBooks();
-                    break;
-                case 2:
-                    reserveBook();
-                    break;
-                case 3:
-                    displayMovies();
-                    break;
-                case 4:
-                    checkDetails();
-                    break;
-                case 5:
-                    login();
-                    break;
-                case 6:
-                    logout();
-                    break;
-                case 0:
-                    return true;
-                default:
-                    printStream.println("Invalid option");
-            }
-
-        return false;
-    }
-
-    private void logout() {
-        if (currentUser != null) {
-            currentUser.logout();
-            currentUser = null;
+        String selection = input.getString();
+        if(menu.containsKey(selection))
+        {
+        return menu.get(selection).performAction();
         }
-        loggedIn = false;
-        printStream.println("You are logged out.");
-    }
-
-    private void login() {
-        printStream.println("Enter your Username :");
-        String username = input.getString();
-        printStream.println("Enter your Password :");
-        String password = input.getString();
-        if (tryLogin(username, password)) {
-            loggedIn = true;
-            printStream.println("You have successfully logged in.");
-        } else {
-            printStream.println("Invalid username or password.");
-        }
-    }
-
-    private boolean tryLogin(String username, String password) {
-        for (User user : users) {
-            if (user.tryLogin(username, password)) {
-                currentUser = user;
-                return true;
-            }
-
-        }
-        return false;
-    }
-
-    private void displayMovies() {
-        for (Movie movie : movies) {
-            printStream.println(movie.toString());
-        }
-    }
-
-    private void reserveBook() {
-        if (!loggedIn) {
-            printStream.println("You need to Login to use this service.");
-        } else {
-            int bookNumber = input.getSelection();
-            Book requestedBook = getRequestedBook(bookNumber);
-            if (requestedBook != null) {
-                requestedBook.reserved = true;
-                printStream.println("Thank you! Enjoy the book " + requestedBook.name + ".");
-            } else {
-                printStream.println("Sorry! We do not have that book yet.");
-            }
-        }
-    }
-
-    private Book getRequestedBook(int bookNumber) {
-        for (Book book : books) {
-            if (book.checkNumber(bookNumber) && book.isAvailable()) {
-                return book;
-            }
-        }
-        return null;
-    }
-
-    private void checkDetails() {
-        if (!loggedIn) {
-            printStream.println("Please talk to Librarian. Thank you.");
-        } else {
-            currentUser.printDetails();
-        }
-    }
-
-    private void displayBooks() {
-        for (Book book : books) {
-            printStream.println(book.toString());
+        else
+        {
+            printStream.println("Invalid Option.");
+            return false;
         }
 
     }
