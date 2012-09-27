@@ -14,14 +14,14 @@ public class UserTest extends TestCase {
     }
 
     public void testTryLogin() throws Exception {
-        assertTrue(new User("111", "vidhi", "abc", "vkp.987", "123", false, mockPrintStream).tryLogin("111", "abc"));
-        assertFalse(new User("111", "vidhi", "abc", "vkp.987", "123", false, mockPrintStream).tryLogin("111", "xyz"));
-        assertFalse(new User("111", "vidhi", "abc", "vkp.987", "123", false, mockPrintStream).tryLogin("112", "abc"));
+        assertTrue(new User("111", "vidhi", "abc", "vkp.987", "123", mockPrintStream).tryLogin("111", "abc"));
+        assertFalse(new User("111", "vidhi", "abc", "vkp.987", "123", mockPrintStream).tryLogin("111", "xyz"));
+        assertFalse(new User("111", "vidhi", "abc", "vkp.987", "123", mockPrintStream).tryLogin("112", "abc"));
 
     }
 
     public void testPrintDetails() throws Exception {
-        new User("111", "vidhi", "abc", "vkp.987", "123", false, mockPrintStream).printDetails();
+        new User("111", "vidhi", "abc", "vkp.987", "123", mockPrintStream).printDetails();
         verify(mockPrintStream).println("Name : vidhi");
         verify(mockPrintStream).println("Email : vkp.987");
         verify(mockPrintStream).println("Phone Number : 123");

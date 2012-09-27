@@ -4,7 +4,8 @@ import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 
 public class DisplayBooksActionTest extends TestCase {
@@ -14,8 +15,9 @@ public class DisplayBooksActionTest extends TestCase {
     protected void setUp() throws Exception {
         super.setUp();
         mockPrintStream = mock(PrintStream.class);
-        displayBooksAction = new DisplayBooksAction(mockPrintStream,books());
+        displayBooksAction = new DisplayBooksAction(mockPrintStream, books());
     }
+
     private List<Book> books() {
         List<Book> books = new ArrayList<Book>();
         books.add(new Book(1, "Alice in Wonderland", false));
@@ -25,6 +27,7 @@ public class DisplayBooksActionTest extends TestCase {
         books.add(new Book(5, "Deathly Hallows", false));
         return books;
     }
+
     public void testPerformAction() throws Exception {
         displayBooksAction.performAction();
 

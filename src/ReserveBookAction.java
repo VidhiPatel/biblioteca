@@ -1,27 +1,40 @@
+import java.io.PrintStream;
+import java.util.List;
+
 public class ReserveBookAction extends Action {
+    private Session session;
+    private PrintStream printStream;
+    private Input input;
+    private List<Book> books;
+
     @Override
     public Boolean performAction() {
-        if (!biblioteca.loggedIn) {
-            biblioteca.printStream.println("You need to Login to use this service.");
+        if (!session.isLoggedIn()) {
+            printStream.println("You need to Login to use this service.");
         } else {
-            int bookNumber = biblioteca.input.getSelection();
+            int bookNumber = input.getSelection();
             Book requestedBook = getRequestedBook(bookNumber);
             if (requestedBook != null) {
                 requestedBook.reserved = true;
-                biblioteca.printStream.println("Thank you! Enjoy the book " + requestedBook.name + ".");
+                printStream.println("Thank you! Enjoy the book " + requestedBook.name + ".");
             } else {
-                biblioteca.printStream.println("Sorry! We do not have that book yet.");
+                printStream.println("Sorry! We do not have that book yet.");
             }
         }
         return false;
 
     }
 
-    ReserveBookAction(Biblioteca biblioteca) {
-        super(biblioteca);
+    ReserveBookAction(Session session, PrintStream printStream, Input input, List<Book> books) {
+
+        this.session = session;
+        this.printStream = printStream;
+        this.input = input;
+        this.books = books;
     }
+
     private Book getRequestedBook(int bookNumber) {
-        for (Book book : biblioteca.books) {
+        for (Book book : books) {
             if (book.checkNumber(bookNumber) && book.isAvailable()) {
                 return book;
             }

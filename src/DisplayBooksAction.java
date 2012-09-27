@@ -1,11 +1,11 @@
 import java.io.PrintStream;
 import java.util.List;
 
-public class DisplayBooksAction  extends Action{
+public class DisplayBooksAction extends Action {
     private PrintStream printStream;
     private List<Book> books;
-    DisplayBooksAction(PrintStream printStream,List<Book> books)
-    {
+
+    DisplayBooksAction(PrintStream printStream, List<Book> books) {
         this.printStream = printStream;
         this.books = books;
     }

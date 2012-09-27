@@ -1,16 +1,21 @@
+import java.io.PrintStream;
+
 public class LogoutAction extends Action {
+    private Session session;
+    private PrintStream printStream;
+
     @Override
     public Boolean performAction() {
-        if (biblioteca.currentUser != null) {
-            biblioteca.currentUser.logout();
-            biblioteca.currentUser = null;
-        }
-        biblioteca.loggedIn = false;
-        biblioteca.printStream.println("You are logged out.");
+
+
+        session.setCurrentUser(null);
+        printStream.println("You are logged out.");
         return false;
     }
 
-    LogoutAction(Biblioteca biblioteca) {
-        super(biblioteca);
+    LogoutAction(Session session, PrintStream printStream) {
+
+        this.session = session;
+        this.printStream = printStream;
     }
 }

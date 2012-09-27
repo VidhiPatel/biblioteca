@@ -1,7 +1,7 @@
 public abstract class Action {
     Biblioteca biblioteca;
-    Action(Biblioteca biblioteca)
-    {
+
+    Action(Biblioteca biblioteca) {
         this.biblioteca = biblioteca;
     }
 

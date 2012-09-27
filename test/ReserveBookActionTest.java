@@ -8,21 +8,22 @@ import static org.mockito.Mockito.*;
 
 
 public class ReserveBookActionTest extends TestCase {
-    private Biblioteca mockBiblioteca;
+
     private PrintStream mockPrintStream;
-    private ReserveBookAction reserveBookAction;
+    private ReserveBookAction reserveBookActionLoggedIn;
+    private ReserveBookAction reserveBookActionNotLoggedIn;
     private Input mockInput;
+    private Session session;
 
     protected void setUp() throws Exception {
         super.setUp();
         mockPrintStream = mock(PrintStream.class);
         mockInput = mock(Input.class);
-        mockBiblioteca = mock(Biblioteca.class);
-        mockBiblioteca.books = books();
-        mockBiblioteca.printStream = mockPrintStream;
-        mockBiblioteca.input = mockInput;
-        reserveBookAction = new ReserveBookAction(mockBiblioteca);
+        session = new Session(new User("111", "abc", "xyz", "abc@xyz.com", "123", mockPrintStream));
+        reserveBookActionLoggedIn = new ReserveBookAction(session, mockPrintStream, mockInput, books());
+        reserveBookActionNotLoggedIn = new ReserveBookAction(new Session(null), mockPrintStream, mockInput, books());
     }
+
     private List<Book> books() {
         List<Book> books = new ArrayList<Book>();
         books.add(new Book(1, "Alice in Wonderland", false));
@@ -32,26 +33,32 @@ public class ReserveBookActionTest extends TestCase {
         books.add(new Book(5, "Deathly Hallows", false));
         return books;
     }
+
     public void testPerformActionNotLoggedIn() throws Exception {
-        mockBiblioteca.loggedIn = false;
-        reserveBookAction.performAction();
+
+
+        reserveBookActionNotLoggedIn.performAction();
         verify(mockPrintStream).println("You need to Login to use this service.");
 
     }
+
     public void testPerformActionCorrectBook() throws Exception {
-        mockBiblioteca.loggedIn = true;
-        when(mockInput.getSelection()).thenReturn(3,3);
-        reserveBookAction.performAction();
+
+
+        when(mockInput.getSelection()).thenReturn(3, 3);
+        reserveBookActionLoggedIn.performAction();
         verify(mockPrintStream).println("Thank you! Enjoy the book Angels and Demons.");
-        reserveBookAction.performAction();
+        reserveBookActionLoggedIn.performAction();
         verify(mockPrintStream).println("Sorry! We do not have that book yet.");
 
 
     }
+
     public void testPerformActionIncorrectBook() throws Exception {
-        mockBiblioteca.loggedIn = true;
+
+
         when(mockInput.getSelection()).thenReturn(6);
-        reserveBookAction.performAction();
+        reserveBookActionLoggedIn.performAction();
         verify(mockPrintStream).println("Sorry! We do not have that book yet.");
 
 
