@@ -7,7 +7,6 @@ public class BibliotecaMain {
     private final Biblioteca biblioteca;
     private static Session session = new Session(null);
     private static Input input = new Input();
-
     public BibliotecaMain(Biblioteca biblioteca) {
         this.biblioteca = biblioteca;
     }
